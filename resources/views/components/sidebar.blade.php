@@ -34,6 +34,13 @@
                 Manajemen Anggota
             </x-nav-item>
 
+            <x-nav-item href="/manajemen-kas" :active="request()->is('manajemen-kas*')" class="tooltip">
+                <x-slot name="icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </x-slot>
+                Manajemen Kas
+            </x-nav-item>
+
             <x-nav-item href="/savings" :active="request()->is('savings*')" class="tooltip">
                 <x-slot name="icon">
                     <i class="fas fa-piggy-bank"></i>
@@ -48,18 +55,11 @@
                 Pinjaman
             </x-nav-item>
 
-            <x-nav-item href="/transactions" :active="request()->is('transactions*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-exchange-alt"></i>
-                </x-slot>
-                Transaksi
-            </x-nav-item>
-
             <x-nav-item href="/reports" :active="request()->is('reports*')" class="tooltip">
                 <x-slot name="icon">
                     <i class="fas fa-chart-bar"></i>
                 </x-slot>
-                Laporan
+                Laporan Neraca
             </x-nav-item>
 
             <div class="my-4 border-t border-gray-200"></div>

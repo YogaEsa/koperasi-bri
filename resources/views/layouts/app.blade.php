@@ -122,7 +122,7 @@
             position: relative;
         }
 
-        .tooltip .tooltip-text {
+        .tooltip-text {
             visibility: hidden;
             opacity: 0;
             background: linear-gradient(135deg, var(--bri-primary) 0%, var(--bri-secondary) 100%);
@@ -138,12 +138,12 @@
             white-space: nowrap;
             font-size: 13px;
             font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             pointer-events: none;
             box-shadow: 0 8px 20px rgba(0, 61, 130, 0.25), 0 4px 10px rgba(0, 61, 130, 0.15);
         }
 
-        .tooltip .tooltip-text::before {
+        .tooltip-text::before {
             content: '';
             position: absolute;
             right: 100%;
