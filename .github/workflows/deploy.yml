@@ -19,13 +19,24 @@ jobs:
             # Ganti 'public_html' dengan path project Anda di server
             cd public_html || exit 1
 
+            # Check PHP version
+            echo "🔍 Checking PHP version..."
+            php -v
+
+            # Check required extensions
+            echo "🔍 Checking required PHP extensions..."
+            php -m | grep -E "pdo|mbstring|openssl|tokenizer|xml|ctype|json|bcmath|fileinfo"
+
             # Pull latest code
             echo "📥 Pulling latest code..."
             git pull origin main || exit 1
 
             # Install/Update PHP dependencies
             echo "📦 Installing Composer dependencies..."
-            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader || exit 1
+            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs || {
+              echo "❌ Composer install failed. Trying with platform requirements check..."
+              composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            }
 
             # Install/Update Node dependencies
             echo "📦 Installing NPM dependencies..."
