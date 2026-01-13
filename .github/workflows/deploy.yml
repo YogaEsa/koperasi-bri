@@ -32,7 +32,7 @@ jobs:
             npm ci --omit=dev || exit 1
 
             # Build frontend assets (PENTING untuk Vite)
-            echo "🔨 Building frontend assets..."
+            echo "🔨 Building frontend assets.."
             npm run build || exit 1
 
             # Clear all caches before recaching
