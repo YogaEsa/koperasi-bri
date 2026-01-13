@@ -1,0 +1,63 @@
+name: Deploy Laravel to Hostinger
+
+on:
+  push:
+    branches: [ main ] # Ganti sesuai branch utama Anda
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT || 22 }}
+          script: |
+            # Ganti 'public_html' dengan path project Anda di server
+            cd public_html || exit 1
+
+            # Pull latest code
+            echo "📥 Pulling latest code..."
+            git pull origin main || exit 1
+
+            # Install/Update PHP dependencies
+            echo "📦 Installing Composer dependencies..."
+            composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader || exit 1
+
+            # Install/Update Node dependencies
+            echo "📦 Installing NPM dependencies..."
+            npm ci --omit=dev || exit 1
+
+            # Build frontend assets (PENTING untuk Vite)
+            echo "🔨 Building frontend assets..."
+            npm run build || exit 1
+
+            # Clear all caches before recaching
+            echo "🧹 Clearing caches..."
+            php artisan cache:clear
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+
+            # Run migrations
+            echo "🗄️ Running migrations..."
+            php artisan migrate --force || exit 1
+
+            # Optimize for production
+            echo "⚡ Optimizing for production..."
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+
+            # Create storage link if not exists
+            echo "🔗 Creating storage link..."
+            php artisan storage:link || true
+
+            # Set proper permissions
+            echo "🔒 Setting permissions..."
+            chmod -R 775 storage bootstrap/cache
+
+            echo "✅ Deployment completed successfully!"
