@@ -15,6 +15,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         * {
             font-family: 'Inter', sans-serif;
@@ -163,10 +166,87 @@
                 linear-gradient(135deg, #f8fafc 0%, #e3f2fd 50%, #f5f9ff 100%);
         }
 
+        /* Skeleton Loading */
+        #skeleton-loader {
+            position: fixed;
+            inset: 0;
+            background: #f8fafc;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out, visibility 0.5s ease-out;
+        }
+
+        .skeleton-content {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .skeleton-logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 50%;
+        }
+
+        .skeleton-text {
+            width: 200px;
+            height: 24px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-card {
+            width: 100%;
+            height: 300px;
+            background: #fff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+
+        .skeleton-input {
+            width: 100%;
+            height: 48px;
+            background: linear-gradient(90deg, #e2e8f0 25%, #f1f5f9 50%, #e2e8f0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-loading 1.5s infinite;
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes skeleton-loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
         @yield('styles')
     </style>
 </head>
 <body class="min-h-screen gradient-background flex items-center justify-center py-8 px-4 relative overflow-hidden">
+
+    <!-- Skeleton Loader -->
+    <div id="skeleton-loader">
+        <div class="skeleton-content">
+            <div class="skeleton-logo"></div>
+            <div class="skeleton-text"></div>
+            <div class="skeleton-card">
+                <div class="skeleton-input" style="margin-top: 2rem"></div>
+                <div class="skeleton-input"></div>
+                <div class="skeleton-input" style="width: 50%"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Particle Background -->
     <div class="particles">
@@ -176,10 +256,73 @@
     </div>
 
     <!-- Main Content -->
-    <div class="relative z-10 w-full">
+    <div class="relative z-10 w-full" style="opacity: 0; transition: opacity 0.5s ease-in;" id="main-content">
         @yield('content')
     </div>
 
+    <script>
+        // Skeleton Loader Logic
+        window.addEventListener('load', function() {
+            const loader = document.getElementById('skeleton-loader');
+            const content = document.getElementById('main-content');
+
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                loader.style.visibility = 'hidden';
+                content.style.opacity = '1';
+            }, 800); // Slight delay for smoother feel
+        });
+
+        // SweetAlert2 Configuration
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        });
+
+        // Global Alert Handler
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                confirmButtonColor: '#003d82',
+                confirmButtonText: 'OK',
+                background: '#fff',
+                backdrop: `rgba(0,0,123,0.1)`,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                }
+            });
+        @endif
+
+        @if(session('error'))
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: "{{ session('error') }}",
+                confirmButtonColor: '#003d82',
+            });
+        @endif
+
+        @if($errors->any())
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                html: '<ul style="text-align: left;">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+                confirmButtonColor: '#003d82',
+            });
+        @endif
+    </script>
     @yield('scripts')
 </body>
 </html>

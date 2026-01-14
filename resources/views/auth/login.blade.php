@@ -78,7 +78,7 @@
         title="Koperasi BRI"
         subtitle="Sistem Informasi Manajemen Koperasi">
 
-        <form action="{{ route('dashboard') }}" method="" class="space-y-6">
+        <form action="{{ route('login.post') }}" method="POST" class="space-y-6">
             @csrf
 
             <!-- Email Input -->
