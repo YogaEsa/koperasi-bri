@@ -9,8 +9,11 @@ Route::get('/', function () {
 });
 
 // Authentication Routes
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected Routes (Memerlukan autentikasi)
@@ -73,6 +76,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports', function () {
         return view('reports.index');
     })->name('reports.index');
+
+    // Role Management (Superadmin Only)
+    Route::resource('roles', \App\Http\Controllers\RoleController::class)->middleware('role:superadmin');
 
     // Settings Route (Static)
     Route::get('/settings', function () {

@@ -34,8 +34,8 @@
                     <i class="fas fa-user text-white text-sm"></i>
                 </div>
                 <div class="hidden md:block">
-                    <p class="text-sm font-bold text-gray-900 leading-tight">Admin Koperasi</p>
-                    <p class="text-xs text-gray-600">admin@koperasi.bri</p>
+                    <p class="text-sm font-bold text-gray-900 leading-tight">{{ auth()->user()->name }}</p>
+                    <p class="text-xs text-gray-600">{{ auth()->user()->role->description ?? 'User' }}</p>
                 </div>
                 <i class="fas fa-chevron-down text-gray-400 text-xs hidden lg:block group-hover:text-gray-600 transition-colors duration-200"></i>
             </div>

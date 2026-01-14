@@ -20,66 +20,30 @@
 
         <!-- Navigation Menu -->
         <nav class="flex-1 py-6 px-4 space-y-1 overflow-y-auto overflow-x-visible">
-            <x-nav-item href="/dashboard" :active="request()->is('dashboard')" class="tooltip">
+            @foreach(auth()->user()->role->menus->sortBy('order') as $menu)
+            <x-nav-item href="{{ route($menu->route) }}" :active="request()->routeIs($menu->route) || request()->url() == route($menu->route).'*'" class="tooltip">
                 <x-slot name="icon">
-                    <i class="fas fa-tachometer-alt"></i>
+                    <i class="{{ $menu->icon }}"></i>
                 </x-slot>
-                Dashboard
+                {{ $menu->name }}
             </x-nav-item>
-
-            <x-nav-item href="/members" :active="request()->is('members*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-users"></i>
-                </x-slot>
-                Manajemen Anggota
-            </x-nav-item>
-
-            <x-nav-item href="/manajemen-kas" :active="request()->is('manajemen-kas*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-exchange-alt"></i>
-                </x-slot>
-                Manajemen Kas
-            </x-nav-item>
-
-            <x-nav-item href="/savings" :active="request()->is('savings*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-piggy-bank"></i>
-                </x-slot>
-                Simpanan
-            </x-nav-item>
-
-            <x-nav-item href="/loans" :active="request()->is('loans*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-hand-holding-usd"></i>
-                </x-slot>
-                Pinjaman
-            </x-nav-item>
-
-            <x-nav-item href="/reports" :active="request()->is('reports*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-chart-bar"></i>
-                </x-slot>
-                Laporan Neraca
-            </x-nav-item>
-
-            <div class="my-4 border-t border-gray-200"></div>
-
-            <x-nav-item href="/settings" :active="request()->is('settings*')" class="tooltip">
-                <x-slot name="icon">
-                    <i class="fas fa-cog"></i>
-                </x-slot>
-                Pengaturan
-            </x-nav-item>
+            @endforeach
         </nav>
 
         <!-- Logout Button -->
         <div class="p-4 border-t border-gray-100 mt-auto">
-            <x-nav-item href="/login" class="tooltip !text-red-600 hover:!bg-red-50 !border-transparent hover:!border-red-200">
-                <x-slot name="icon">
-                    <i class="fas fa-sign-out-alt !text-red-600"></i>
-                </x-slot>
-                Logout
-            </x-nav-item>
+            <form action="{{ route('logout') }}" method="POST" id="logout-form">
+                @csrf
+                <button type="submit" class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 group text-red-600 hover:bg-red-50 hover:text-red-700 navigation-item relative">
+                    <span class="flex-shrink-0 w-6 h-6 flex items-center justify-center mr-3 sidebar-icon nav-icon transition-colors">
+                        <i class="fas fa-sign-out-alt text-lg group-hover:scale-110 transition-transform"></i>
+                    </span>
+                    <span class="nav-text truncate font-semibold tracking-wide">Logout</span>
+
+                    <!-- Tooltip -->
+                    <span class="tooltip-text">Logout</span>
+                </button>
+            </form>
         </div>
     </div>
 </aside>
