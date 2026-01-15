@@ -17,7 +17,7 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // Protected Routes (Memerlukan autentikasi)
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'menu.access'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Member Management Routes (Static)

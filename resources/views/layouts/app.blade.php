@@ -51,12 +51,26 @@
             width: var(--sidebar-mini-width);
         }
 
-        .content-full {
-            margin-left: var(--sidebar-width);
+        /* Sidebar & Content Response Logic */
+        @media (min-width: 1024px) {
+            .content-full {
+                margin-left: var(--sidebar-width);
+            }
+
+            .content-mini {
+                margin-left: var(--sidebar-mini-width);
+            }
         }
 
-        .content-mini {
-            margin-left: var(--sidebar-mini-width);
+        /* Mobile Defaults */
+        @media (max-width: 1023px) {
+            .content-full, .content-mini {
+                margin-left: 0 !important;
+            }
+
+            .sidebar-full, .sidebar-mini {
+                width: var(--sidebar-width);
+            }
         }
 
         /* Smooth Transitions */
