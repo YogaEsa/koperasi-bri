@@ -16,8 +16,12 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT || 22 }}
           script: |
-            # Ganti 'public_html' dengan path project Anda di server
-            cd public_html || exit 1
+            # Debugging: Cek direktori saat ini
+            echo "📂 Current directory:"
+            pwd
+
+            # Masuk ke direktori project yang benar
+            cd /home/u543874255/domains/dev.jati-jajar.com/public_html || exit 1
 
             # Check PHP version
             echo "🔍 Checking PHP version..."
