@@ -8,7 +8,30 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Build Frontend Assets
+        run: |
+          npm ci
+          npm run build
+
+      - name: Copy Assets via SCP
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT || 22 }}
+          source: "public/build"
+          target: "/home/u543874255/domains/dev.jati-jajar.com/public_html"
+
+      - name: Deploy Backend via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -41,14 +64,6 @@ jobs:
               echo "❌ Composer install failed. Trying with platform requirements check..."
               composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
             }
-
-            # Install/Update Node dependencies
-            echo "📦 Installing NPM dependencies..."
-            npm ci --omit=dev || exit 1
-
-            # Build frontend assets (PENTING untuk Vite)
-            echo "🔨 Building frontend assets.."
-            npm run build || exit 1
 
             # Clear all caches before recaching
             echo "🧹 Clearing caches..."
