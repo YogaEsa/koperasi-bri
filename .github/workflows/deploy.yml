@@ -91,4 +91,8 @@ jobs:
             echo "🔒 Setting permissions..."
             chmod -R 775 storage bootstrap/cache
 
+            # Debug Routes
+            echo "🛣️ Debugging Routes..."
+            php artisan route:list
+
             echo "✅ Deployment completed successfully!"
