@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     <style>
         * {
@@ -33,10 +36,21 @@
             --sidebar-mini-width: 80px;
         }
 
-        .bri-primary { background-color: var(--bri-primary); }
-        .bri-secondary { background-color: var(--bri-secondary); }
-        .text-bri-primary { color: var(--bri-primary); }
-        .text-bri-secondary { color: var(--bri-secondary); }
+        .bri-primary {
+            background-color: var(--bri-primary);
+        }
+
+        .bri-secondary {
+            background-color: var(--bri-secondary);
+        }
+
+        .text-bri-primary {
+            color: var(--bri-primary);
+        }
+
+        .text-bri-secondary {
+            color: var(--bri-secondary);
+        }
 
         .gradient-bri {
             background: linear-gradient(135deg, var(--bri-primary) 0%, var(--bri-secondary) 50%, var(--bri-accent) 100%);
@@ -64,11 +78,14 @@
 
         /* Mobile Defaults */
         @media (max-width: 1023px) {
-            .content-full, .content-mini {
+
+            .content-full,
+            .content-mini {
                 margin-left: 0 !important;
             }
 
-            .sidebar-full, .sidebar-mini {
+            .sidebar-full,
+            .sidebar-mini {
                 width: var(--sidebar-width);
             }
         }
@@ -97,6 +114,7 @@
                 opacity: 0;
                 transform: translateX(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -104,8 +122,13 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
         }
 
         @keyframes scaleIn {
@@ -113,6 +136,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -208,6 +232,7 @@
         @yield('styles')
     </style>
 </head>
+
 <body class="bg-pattern min-h-screen">
 
     <!-- Sidebar -->
@@ -290,8 +315,8 @@
         // Skeleton Loader Logic (Global)
         window.addEventListener('load', function() {
             const loader = document.getElementById('skeleton-loader');
-            if(loader) {
-                 setTimeout(() => {
+            if (loader) {
+                setTimeout(() => {
                     loader.style.opacity = '0';
                     loader.style.visibility = 'hidden';
                 }, 500);
@@ -312,7 +337,7 @@
         });
 
         // Global Alert Handler
-        @if(session('success'))
+        @if (session('success'))
             Swal.fire({
                 icon: 'success',
                 title: 'Berhasil!',
@@ -322,7 +347,7 @@
             });
         @endif
 
-        @if(session('error'))
+        @if (session('error'))
             Swal.fire({
                 icon: 'error',
                 title: 'Gagal',
@@ -331,14 +356,15 @@
             });
         @endif
 
-        @if($errors->any())
+        @if ($errors->any())
             Swal.fire({
                 icon: 'warning',
                 title: 'Perhatian',
-                html: '<ul style="text-align: left;">@foreach($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
+                html: '<ul style="text-align: left;">@foreach ($errors->all() as $error)<li>{{ $error }}</li>@endforeach</ul>',
                 confirmButtonColor: '#003d82',
             });
         @endif
     </script>
 </body>
+
 </html>

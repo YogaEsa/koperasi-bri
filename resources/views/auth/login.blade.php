@@ -88,7 +88,7 @@
                 label="Email Address"
                 icon="fas fa-envelope"
                 placeholder="Masukkan email Anda"
-                value="admin@koperasi.bri"
+                value=""
                 required
                 delay="0.5s"
             />
@@ -100,7 +100,7 @@
                 label="Password"
                 icon="fas fa-lock"
                 placeholder="Masukkan password Anda"
-                value="admin123"
+                value=""
                 required
                 :showPasswordToggle="true"
                 delay="0.6s"

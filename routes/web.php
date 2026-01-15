@@ -20,6 +20,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'menu.access'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Profile Routes
+    Route::controller(\App\Http\Controllers\ProfileController::class)->group(function () {
+        Route::get('/profile', 'edit')->name('profile.edit');
+        Route::patch('/profile', 'update')->name('profile.update');
+        Route::get('/profile/password', 'editPassword')->name('profile.password');
+        Route::put('/profile/password', 'updatePassword')->name('profile.password.update');
+    });
+
     // Member Management Routes (Static)
     Route::get('/members', function () {
         return view('members.index');
